@@ -14,12 +14,17 @@ var channel = connnection.CreateModel();
 //autodelete-->subscriber koptugunda kuyrugu sil
 channel.QueueDeclare("hello-queue",true,false,false);
 
-string message = "hello world";
+for (int i = 1; i <= 50; i++)
+{
 
-var messageBody = Encoding.UTF8.GetBytes(message);
+    string message = $"Message {i}";
 
-channel.BasicPublish(string.Empty,"hello-queue",null,messageBody);
+    var messageBody = Encoding.UTF8.GetBytes(message);
 
-Console.WriteLine("Mesaj Gönderildi");
+    channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
+
+    Console.WriteLine($"Mesaj Gönderildi : {message}");
+}
+
 
 Console.ReadLine(); 
