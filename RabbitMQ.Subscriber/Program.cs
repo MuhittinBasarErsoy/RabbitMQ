@@ -12,6 +12,7 @@ var channel = connnection.CreateModel();
 
 var subscriber = new EventingBasicConsumer(channel);
 
+//autoAck kuyruktan otomatik olarak sil
 channel.BasicConsume("hello-queue", true, subscriber);
 
 subscriber.Received += Subscriber_Received;
