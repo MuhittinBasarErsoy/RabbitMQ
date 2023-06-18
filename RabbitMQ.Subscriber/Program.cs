@@ -10,6 +10,9 @@ var channel = connnection.CreateModel();
 
 var randomQueueName = channel.QueueDeclare().QueueName;
 
+//kuyruk kalıcı olacaksa
+//channel.QueueDeclare(randomQueueName,true,false,false);
+
 channel.QueueBind(randomQueueName,"logs-fanout","",null);
 
 channel.BasicQos(0, 1, false);
