@@ -7,21 +7,16 @@ using var connnection = factory.CreateConnection();
 
 var channel = connnection.CreateModel();
 
-//QueueDeclare Prametreleri
-//queue     -->kuyruğun adı
-//durable   -->kuyruklar memoryde tutuluyor. true dersek hdd de.
-//exclusive -->sadece suan olusturulan channel mı ulaşabilir
-//autodelete-->subscriber koptugunda kuyrugu sil
-channel.QueueDeclare("hello-queue",true,false,false);
+channel.ExchangeDeclare("logs-fanout",durable:true,type:ExchangeType.Fanout);
 
 for (int i = 1; i <= 50; i++)
 {
 
-    string message = $"Message {i}";
+    string message = $"log {i}";
 
     var messageBody = Encoding.UTF8.GetBytes(message);
 
-    channel.BasicPublish(string.Empty, "hello-queue", null, messageBody);
+    channel.BasicPublish("logs-fanout","", null, messageBody);
 
     Console.WriteLine($"Mesaj Gönderildi : {message}");
 }

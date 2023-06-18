@@ -8,16 +8,16 @@ using var connnection = factory.CreateConnection();
 
 var channel = connnection.CreateModel();
 
-//channel.QueueDeclare("hello-queue", true, false, false);
+var randomQueueName = channel.QueueDeclare().QueueName;
 
-//prefetchsize ->Kac sizelık alacagı
-//count ->Kacar tane alacagı
-//global ->paylasım
+channel.QueueBind(randomQueueName,"logs-fanout","",null);
+
 channel.BasicQos(0, 1, false);
 var subscriber = new EventingBasicConsumer(channel);
 
-//autoAck kuyruktan otomatik olarak sil
-channel.BasicConsume("hello-queue", false, subscriber);
+channel.BasicConsume(randomQueueName, false, subscriber);
+
+Console.WriteLine("loglar okunuyor.");
 
 subscriber.Received += Subscriber_Received;
 
